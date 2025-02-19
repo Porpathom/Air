@@ -1,7 +1,7 @@
 const { createApp, ref, computed } = Vue;
 
 // Constants and configurations
-const API_KEY = '2bfb13fc-7255-4c70-8195-851d991a799b';
+const API_KEY = '71434f5b-1e8f-4cf9-b2e3-4c4059fc8040';
 const POLLUTANT_THRESHOLDS = {
     pm25: { good: 12, moderate: 35.4, unhealthy: 55.4, veryUnhealthy: 150.4, hazardous: 250.4 },
     pm10: { good: 54, moderate: 154, unhealthy: 254, veryUnhealthy: 354, hazardous: 424 },
@@ -149,23 +149,107 @@ createApp({
       
           // ฟังก์ชันสำหรับดึงพิกัดของจังหวัด
           async getProvinceCoordinates(provinceName) {
-            // สามารถนำมาจากฐานข้อมูลหรือ API ภายนอก เช่น OpenStreetMap Nominatim
-            // สำหรับตัวอย่างนี้ ใช้พิกัดที่กำหนดไว้ล่วงหน้าสำหรับบางจังหวัด
+            // พิกัด GPS ของทุกจังหวัดในประเทศไทย
             const coordinates = {
+              // ภาคกลาง
               'Bangkok': { lat: 13.7563, lon: 100.5018 },
+              'Samut Prakan': { lat: 13.5990, lon: 100.5998 },
+              'Nonthaburi': { lat: 13.8621, lon: 100.5143 },
+              'Pathum Thani': { lat: 14.0208, lon: 100.5292 },
+              'Ayutthaya': { lat: 14.3692, lon: 100.5876 },
+              'Ang Thong': { lat: 14.5896, lon: 100.4545 },
+              'Lopburi': { lat: 14.7995, lon: 100.6534 },
+              'Sing Buri': { lat: 14.8936, lon: 100.3970 },
+              'Chai Nat': { lat: 15.1851, lon: 100.1251 },
+              'Saraburi': { lat: 14.5289, lon: 100.9108 },
+              'Samut Songkhram': { lat: 13.4098, lon: 100.0021 },
+              'Samut Sakhon': { lat: 13.5475, lon: 100.2747 },
+              'Nakhon Pathom': { lat: 13.8196, lon: 100.0646 },
+              
+              // ภาคตะวันออก
+              'Chachoengsao': { lat: 13.6904, lon: 101.0779 },
+              'Prachinburi': { lat: 14.0583, lon: 101.3660 },
+              'Nakhon Nayok': { lat: 14.2069, lon: 101.2130 },
+              'Sa Kaeo': { lat: 13.8241, lon: 102.0645 },
+              'Chonburi': { lat: 13.3611, lon: 100.9847 },
+              'Rayong': { lat: 12.6833, lon: 101.2372 },
+              'Chanthaburi': { lat: 12.6133, lon: 102.1036 },
+              'Trat': { lat: 12.2427, lon: 102.5177 },
+              
+              // ภาคตะวันออกเฉียงเหนือ
+              'Nakhon Ratchasima': { lat: 14.9798, lon: 102.0978 },
+              'Buriram': { lat: 14.9950, lon: 103.1059 },
+              'Surin': { lat: 14.8868, lon: 103.4960 },
+              'Sisaket': { lat: 15.1186, lon: 104.3228 },
+              'Si Sa Ket': { lat: 15.1186, lon: 104.3228 }, // ชื่อทางเลือก
+              'Ubon Ratchathani': { lat: 15.2445, lon: 104.8501 },
+              'Yasothon': { lat: 15.7923, lon: 104.1451 },
+              'Chaiyaphum': { lat: 15.8068, lon: 102.0288 },
+              'Amnat Charoen': { lat: 15.8656, lon: 104.6200 },
+              'Nong Bua Lamphu': { lat: 17.2220, lon: 102.4266 },
+              'Khon Kaen': { lat: 16.4419, lon: 102.8360 },
+              'Udon Thani': { lat: 17.4139, lon: 102.7872 },
+              'Loei': { lat: 17.4860, lon: 101.7223 },
+              'Nong Khai': { lat: 17.8782, lon: 102.7453 },
+              'Maha Sarakham': { lat: 16.1850, lon: 103.3029 },
+              'Roi Et': { lat: 16.0538, lon: 103.6520 },
+              'Kalasin': { lat: 16.4314, lon: 103.5059 },
+              'Sakon Nakhon': { lat: 17.1664, lon: 104.1486 },
+              'Nakhon Phanom': { lat: 17.4048, lon: 104.7690 },
+              'Mukdahan': { lat: 16.5428, lon: 104.7291 },
+              'Bueng Kan': { lat: 18.3609, lon: 103.6465 },
+              
+              // ภาคเหนือ
               'Chiang Mai': { lat: 18.7883, lon: 98.9853 },
+              'Lamphun': { lat: 18.5747, lon: 99.0087 },
+              'Lampang': { lat: 18.2915, lon: 99.4888 },
+              'Uttaradit': { lat: 17.6200, lon: 100.0997 },
+              'Phrae': { lat: 18.1445, lon: 100.1398 },
+              'Nan': { lat: 18.7756, lon: 100.7727 },
+              'Phayao': { lat: 19.1664, lon: 99.9003 },
+              'Chiang Rai': { lat: 19.9105, lon: 99.8406 },
+              'Mae Hong Son': { lat: 19.3020, lon: 98.0112 },
+              'Nakhon Sawan': { lat: 15.7030, lon: 100.1371 },
+              'Uthai Thani': { lat: 15.3838, lon: 100.0258 },
+              'Kamphaeng Phet': { lat: 16.4827, lon: 99.5264 },
+              'Tak': { lat: 16.8839, lon: 99.1259 },
+              'Sukhothai': { lat: 17.0068, lon: 99.8265 },
+              'Phitsanulok': { lat: 16.8298, lon: 100.2658 },
+              'Phichit': { lat: 16.4429, lon: 100.3496 },
+              'Phetchabun': { lat: 16.4159, lon: 101.1590 },
+              
+              // ภาคตะวันตก
+              'Kanchanaburi': { lat: 14.0023, lon: 99.5325 },
+              'Suphan Buri': { lat: 14.4744, lon: 100.1177 },
+              'Ratchaburi': { lat: 13.5283, lon: 99.8131 },
+              'Phetchaburi': { lat: 13.1119, lon: 99.9406 },
+              'Prachuap Khiri Khan': { lat: 11.8126, lon: 99.7957 },
+              
+              // ภาคใต้
+              'Chumphon': { lat: 10.4930, lon: 99.1800 },
+              'Ranong': { lat: 9.9528, lon: 98.6084 },
+              'Surat Thani': { lat: 9.1382, lon: 99.3327 },
+              'Phang Nga': { lat: 8.4518, lon: 98.5255 },
               'Phuket': { lat: 7.9519, lon: 98.3381 },
-              'Sisaket': { lat: 15.1186, lon: 104.3228 }, // พิกัดศรีสะเกษ
-              'Si Sa Ket': { lat: 15.1186, lon: 104.3228 } // พิกัดศรีสะเกษ (ชื่อทางเลือก)
+              'Krabi': { lat: 8.0863, lon: 98.9063 },
+              'Nakhon Si Thammarat': { lat: 8.4303, lon: 99.9630 },
+              'Trang': { lat: 7.5634, lon: 99.6113 },
+              'Phatthalung': { lat: 7.6166, lon: 100.0742 },
+              'Satun': { lat: 6.8482, lon: 100.3155 },
+              'Songkhla': { lat: 7.1905, lon: 100.5945 },
+              'Pattani': { lat: 6.8691, lon: 101.2510 },
+              'Yala': { lat: 6.5410, lon: 101.2809 },
+              'Narathiwat': { lat: 6.4318, lon: 101.8259 }
             };
             
-            // ถ้ามีพิกัดในฐานข้อมูล
             if (coordinates[provinceName]) {
               return coordinates[provinceName];
             }
             
-            // ถ้าไม่มีในฐานข้อมูล อาจใช้ API ภายนอกช่วยค้นหา (ในที่นี้จะส่งคืน null)
-            return null;
+            // ถ้าไม่พบในฐานข้อมูล (อาจเป็นเพราะคำผิดหรือชื่อทางเลือก)
+            // ส่งคืนพิกัดกลางประเทศไทยโดยประมาณ
+            console.log(`ไม่พบพิกัดสำหรับ "${provinceName}" ใช้พิกัดกลางประเทศไทยแทน`);
+            return { lat: 15.8700, lon: 100.9925 }; // พิกัดกลางประเทศไทยโดยประมาณ
           },
       
           getPollutantThai(pollutant) {
@@ -292,6 +376,7 @@ createApp({
                   data = await response.json();
                 }
               }
+              
               
               if (data.status === "success") {
                 const pollution = data.data.current.pollution || {};
